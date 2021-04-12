@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -9,7 +9,7 @@ const session = require('express-session');
 const controllers = require('./src/controllers');
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,9 +31,6 @@ router.get('/privacy-policy', async (req, res) => res.render('pages/privacy-poli
 
 app.use('/', router);
 
-https.createServer({
-  key: fs.readFileSync(path.join(__dirname, './keys', 'server-key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, './keys', 'server-cert.pem')),
-}, app).listen(port);
+http.createServer(app).listen(port);
 
-console.log(`Server running on https://localhost:${port}`);
+console.log(`Server running on http://localhost:${port}`);
